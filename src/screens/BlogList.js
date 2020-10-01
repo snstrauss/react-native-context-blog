@@ -25,8 +25,12 @@ export default function BlogList({ navigation: { navigate } }){
         blogMethods.remove(post);
     }
 
-    function addPost(){
+    function goToAddPost(){
         navigate('create');
+    }
+
+    function goToBlog(blog){
+        navigate('show', { blog });
     }
 
     return (
@@ -35,20 +39,22 @@ export default function BlogList({ navigation: { navigate } }){
                 data={blogs}
                 keyExtractor={blog => blog.id.toString()}
                 renderItem={({ item }) => (
-                    <View style={S.item}>
-                        <Text>
-                            {item.title}
-                        </Text>
-                        <TouchableOpacity onPress={() => removePost(item)}>
-                            <Entypo style={S.trash} name="trash"/>
-                        </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity onPress={() => goToBlog(item)}>
+                        <View style={S.item}>
+                            <Text>
+                                {item.title}
+                            </Text>
+                            <TouchableOpacity onPress={() => removePost(item)}>
+                                <Entypo style={S.trash} name="trash"/>
+                            </TouchableOpacity>
+                        </View>
+                    </TouchableOpacity>
                 )}
                 ItemSeparatorComponent={() => (
                     <View style={S.separator}/>
                 )}
             />
-            <TouchableOpacity style={S.touch} onPress={addPost}>
+            <TouchableOpacity style={S.touch} onPress={goToAddPost}>
                 <Text style={S.add}>+</Text>
             </TouchableOpacity>
         </>
@@ -60,12 +66,14 @@ const S = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: 10
+        padding: 10,
+
+
+
     },
     separator: {
         borderWidth: 1,
         borderColor: 'grey',
-        marginVertical: 10,
         marginHorizontal: 30
     },
     trash: {

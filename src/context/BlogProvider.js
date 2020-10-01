@@ -15,14 +15,7 @@ const blogActions = {
         return [...blogs, ...newBlogs]
     },
     remove: (blogs, blogToRemove) => {
-
-        debugger;
-
-        const newBlogs = blogs.filter((blog => blog.id !== blogToRemove.id));
-
-        debugger;
-
-        return newBlogs;
+        return blogs.filter((blog => blog.id !== blogToRemove.id));
     }
 }
 
