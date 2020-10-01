@@ -1,7 +1,8 @@
 import React, { useContext, useEffect } from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { FlatList, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { BlogContext } from '../context/BlogProvider';
 
+import { Entypo } from '@expo/vector-icons';
 
 
 export default function BlogList({ navigation: { navigate } }){
@@ -19,6 +20,11 @@ export default function BlogList({ navigation: { navigate } }){
         .then(blogMethods.add);
     }, []);
 
+    // blogMethods.remove is used to delete a post
+    function removePost(post){
+        blogMethods.remove(post);
+    }
+
     function addPost(){
         navigate('create');
     }
@@ -29,9 +35,17 @@ export default function BlogList({ navigation: { navigate } }){
                 data={blogs}
                 keyExtractor={blog => blog.id.toString()}
                 renderItem={({ item }) => (
-                    <Text style={S.item}>
-                        {item.title}
-                    </Text>
+                    <View style={S.item}>
+                        <Text>
+                            {item.title}
+                        </Text>
+                        <TouchableOpacity onPress={() => removePost(item)}>
+                            <Entypo style={S.trash} name="trash"/>
+                        </TouchableOpacity>
+                    </View>
+                )}
+                ItemSeparatorComponent={() => (
+                    <View style={S.separator}/>
                 )}
             />
             <TouchableOpacity style={S.touch} onPress={addPost}>
@@ -43,8 +57,20 @@ export default function BlogList({ navigation: { navigate } }){
 
 const S = StyleSheet.create({
     item: {
-        borderWidth: 2,
-        borderColor: 'blue'
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 10
+    },
+    separator: {
+        borderWidth: 1,
+        borderColor: 'grey',
+        marginVertical: 10,
+        marginHorizontal: 30
+    },
+    trash: {
+        color: 'red',
+        fontSize: 20
     },
     touch: {
         position: 'absolute',
