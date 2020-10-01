@@ -37,7 +37,7 @@ export default function BlogList({ navigation: { navigate } }){
         <>
             <FlatList
                 data={blogs}
-                keyExtractor={blog => blog.id.toString()}
+                keyExtractor={blog => blog.id}
                 renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => goToBlog(item)}>
                         <View style={S.item}>
