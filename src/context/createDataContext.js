@@ -47,7 +47,7 @@ export default function createDataContext(contextName, actions, initialState){
 // create an object, where each key corresponds to one action,
 // and holds a function that just calls 'dispatch' with the correct arguments
 function actionsToMethods(actions, dispatch){
-    const methods = Object.entries(actions).reduce((allMethods, [type]) => {
+    const methods = Object.keys(actions).reduce((allMethods, type) => {
 
         allMethods[type] = (payload) => dispatch({
             type,
