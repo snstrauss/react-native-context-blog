@@ -1,8 +1,9 @@
 import React, { useContext, useEffect } from 'react';
-import { FlatList, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { FlatList, StyleSheet, View, Text, TouchableOpacity, Button } from 'react-native';
 import { BlogContext } from '../context/BlogProvider';
 
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, Ionicons } from '@expo/vector-icons';
+import { CountContext } from '../context/CountProvider';
 
 
 export default function BlogList({ navigation: { navigate } }){
@@ -22,19 +23,24 @@ export default function BlogList({ navigation: { navigate } }){
 
     // blogMethods.remove is used to delete a post
     function removePost(post){
-        blogMethods.remove(post);
-    }
-
-    function goToAddPost(){
-        navigate('create');
+            blogMethods.remove(post);
     }
 
     function goToBlog(blog){
         navigate('show', { blog });
     }
 
+    const { state: count, methods: countMethods } = useContext(CountContext);
+
     return (
         <>
+            <View style={{borderWidth: 1, borderColor: 'red'}}>
+                <Text>
+                    count: {count}
+                </Text>
+                <Button title="add" onPress={countMethods.add} />
+                <Button title="sub" onPress={countMethods.subtract} />
+            </View>
             <FlatList
                 data={blogs}
                 keyExtractor={blog => blog.id}
@@ -54,11 +60,22 @@ export default function BlogList({ navigation: { navigate } }){
                     <View style={S.separator}/>
                 )}
             />
-            <TouchableOpacity style={S.touch} onPress={goToAddPost}>
-                <Text style={S.add}>+</Text>
-            </TouchableOpacity>
         </>
     )
+}
+
+/**
+ * this will add a button on the right side of the header, but ONLY on the list screen.
+ * we add navigation options specific to this route.
+ */
+BlogList.navigationOptions = ({ navigation: { navigate } }) => {
+    return {
+        headerRight: () => (
+            <TouchableOpacity onPress={() => navigate('create')}>
+                <Ionicons style={S.add} name="md-add-circle-outline" size={24} color="black" />
+            </TouchableOpacity>
+        )
+    }
 }
 
 const S = StyleSheet.create({
@@ -67,9 +84,6 @@ const S = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: 10,
-
-
-
     },
     separator: {
         borderWidth: 1,
@@ -80,22 +94,7 @@ const S = StyleSheet.create({
         color: 'red',
         fontSize: 20
     },
-    touch: {
-        position: 'absolute',
-        bottom: 30,
-        right: 30,
-        borderRadius: 50,
-        width: 50,
-        height: 50,
-    },
     add: {
-        backgroundColor: 'dodgerblue',
-        color: 'white',
-        fontSize: 30,
-        borderRadius: 50,
-        width: 50,
-        height: 50,
-        textAlign: "center",
-        textAlignVertical: 'center'
+        marginRight: 30
     }
 })

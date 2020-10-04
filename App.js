@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import BlogProvider from './src/context/BlogProvider';
+import CountProvider from './src/context/CountProvider';
 
 import CreateBlog from "./src/screens/CreateBlog";
 import EditBlog from "./src/screens/EditBlog";
@@ -30,9 +31,11 @@ const Routes = createAppContainer(navigator);
 export default function App(){
   return (
     <BlogProvider>
-      <View style={S.appContainer}>
-        <Routes />
-      </View>
+      <CountProvider>
+        <View style={S.appContainer}>
+          <Routes />
+        </View>
+      </CountProvider>
     </BlogProvider>
   )
 }
