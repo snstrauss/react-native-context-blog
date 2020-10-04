@@ -1,12 +1,5 @@
 import createDataContext from './createDataContext';
 
-function uuidv4() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
-}
-
 /**
  * using the generic createDataContext,
  * only the reducer actions, an initial state,
@@ -18,10 +11,6 @@ const blogActions = {
         if(!Array.isArray(newBlogs)){
             newBlogs = [newBlogs];
         }
-
-        newBlogs.forEach(blog => {
-            blog.id = uuidv4();
-        });
 
         return [...blogs, ...newBlogs]
     },

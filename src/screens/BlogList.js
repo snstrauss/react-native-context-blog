@@ -4,6 +4,7 @@ import { BlogContext } from '../context/BlogProvider';
 
 import { Entypo, Ionicons } from '@expo/vector-icons';
 import { CountContext } from '../context/CountProvider';
+import { getBlogs, removeBlog } from '../services/blog.service';
 
 
 export default function BlogList({ navigation: { navigate } }){
@@ -16,14 +17,16 @@ export default function BlogList({ navigation: { navigate } }){
     // when data was received, a call to 'blogMethods.add'
     // with the data as payload will add them to the blogs state
     useEffect(() => {
-        fetch('https://jsonstorage.net/api/items/389cd165-7183-47a1-a60a-b2a81f256ed7')
-        .then(res => res.json())
+        getBlogs()
         .then(blogMethods.add);
     }, []);
 
     // blogMethods.remove is used to delete a post
     function removePost(post){
+        removeBlog(post)
+        .then(() => {
             blogMethods.remove(post);
+        });
     }
 
     function goToBlog(blog){
@@ -43,7 +46,7 @@ export default function BlogList({ navigation: { navigate } }){
             </View>
             <FlatList
                 data={blogs}
-                keyExtractor={blog => blog.id}
+                keyExtractor={blog => blog.id.toString()}
                 renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => goToBlog(item)}>
                         <View style={S.item}>

@@ -1,20 +1,23 @@
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
 import { BlogContext } from '../context/BlogProvider';
+import { addBlog } from '../services/blog.service';
 
 export default function CreateBlog({ navigation: { navigate } }){
 
     const [title, setTitle] = useState();
     const [content, setContent] = useState();
 
-    const { state: blogs, methods: blogMethods } = useContext(BlogContext);
+    const { methods: blogMethods } = useContext(BlogContext);
 
     function createBlog(){
-        blogMethods.add({
+        addBlog({
             title,
             content
+        }).then(newBlog => {
+            blogMethods.add(newBlog);
+            navigate('list');
         });
-        navigate('list');
     }
 
     return (
