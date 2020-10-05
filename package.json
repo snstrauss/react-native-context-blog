@@ -6,7 +6,6 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "server": "npm run db && npm run tunnel",
     "db": "json-server -w ./server/db.json -p 1234",
     "tunnel": "lt --port 1234 --subdomain contextblog"
   },
